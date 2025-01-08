@@ -21,7 +21,7 @@ user_query = st.text_input("Enter your question or describe your problem:")
 if user_query:
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-3.5-turbo",  # Use "gpt-4" if available
             messages=[
                 {"role": "system", "content": "You are an AI assistant for Allo Fiber Hub Technicians. Provide clear and actionable advice."},
                 {"role": "user", "content": user_query}
@@ -29,7 +29,7 @@ if user_query:
             max_tokens=500
         )
         st.write("### Response:")
-        st.write(response["choices"][0]["message"]["content"])
+        st.write(response['choices'][0]['message']['content'])
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
