@@ -1,8 +1,8 @@
 import openai
 import streamlit as st
 
-# Set OpenAI API Key
-openai.api_key = st.secrets[sk-AUu6PX8Kn8y7phzdpiIiLXNGridtYSgS-s6JOzoEx3T3BlbkFJ5iD0Uk3Ow1O_KrgBVJ_BGFo9Ja4MRLlfZmXTsJKygA]  # Secure your key using Streamlit secrets
+# Use Streamlit Secrets to securely access the API key
+openai.api_key = st.secrets["openai_api_key"]
 
 # App Title
 st.title("Allo Fiber Hub Technician AI Assistant")
@@ -19,15 +19,18 @@ user_query = st.text_input("Enter your question or describe your problem:")
 
 # Generate a Response
 if user_query:
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Use GPT-4 if you have access
-        messages=[
-            {"role": "system", "content": "You are an AI assistant for Allo Fiber Hub Technicians. Provide clear and actionable advice."},
-            {"role": "user", "content": user_query}
-        ],
-        max_tokens=500
-    )
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are an AI assistant for Allo Fiber Hub Technicians. Provide clear and actionable advice."},
+                {"role": "user", "content": user_query}
+            ],
+            max_tokens=500
+        )
+        st.write("### Response:")
+        st.write(response["choices"][0]["message"]["content"])
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
 
-    # Display the Response
-    st.write("### Response:")
-    st.write(response["choices"][0]["message"]["content"])
+
